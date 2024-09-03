@@ -82,7 +82,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rusty_math"
+name = "sci_rust"
 version = "0.1.0"
 dependencies = [
  "num",

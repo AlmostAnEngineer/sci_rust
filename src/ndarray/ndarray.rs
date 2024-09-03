@@ -1,20 +1,31 @@
 use num::Num;
 
 #[derive(Debug)]
-pub struct RustyArray<T>{
+pub struct NDArray<T>{
     _data: Vec<T>,
     _shape: Vec<usize>,
     _strides: Vec<usize>
 }
 
-impl<T: Num + Copy> RustyArray<T> {
+impl<T: Num + Copy> NDArray<T> {
     pub fn new(size: Vec<usize>, initial_value: T) -> Self {
         // creates new dynamic array 
         // T must be numeric
         let vec_size: usize = Self::compute_array_size(&size);
         let strides: Vec<usize> = Self::calculate_strides(&size);
         let data = vec![initial_value; vec_size];
-        return RustyArray{_data: data, _shape: size, _strides: strides};
+        return NDArray{_data: data, _shape: size, _strides: strides};
+    }
+
+    pub fn get_data(&self) -> &Vec<T> {
+        // return non-mutable object inside array
+        return &self._data;
+    }
+
+    pub fn clear(&mut self) {
+        self._data.clear();
+        self._strides.clear();
+        self._shape.clear();
     }
 
     fn compute_array_size(size: &Vec<usize>) -> usize {
@@ -30,17 +41,5 @@ impl<T: Num + Copy> RustyArray<T> {
         }
         return strides;
     }
-
-    pub fn get_data(&self) -> &Vec<T> {
-        // return non-mutable object inside array
-        return &self._data;
-    }
-
-    pub fn clear(&mut self) {
-        self._data.clear();
-        self._strides.clear();
-        self._shape.clear();
-    }
-
 }
 

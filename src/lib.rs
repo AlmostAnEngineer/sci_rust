@@ -1,1 +1,1 @@
-pub mod rusty_array;
+pub mod ndarray;

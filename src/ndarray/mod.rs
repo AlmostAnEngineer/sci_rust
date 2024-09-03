@@ -1,4 +1,4 @@
-pub mod rusty_array;
+pub mod ndarray;
 
 #[cfg(test)]
 mod tests;

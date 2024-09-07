@@ -10,3 +10,4 @@ mod ndarray_operators;
 
 #[cfg(test)]
 mod tests;
+mod utils;

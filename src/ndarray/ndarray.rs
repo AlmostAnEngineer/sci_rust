@@ -3,20 +3,25 @@ use rand::Rng;
 use crate::ndarray::NDArray;
 
 impl<T: Num + Copy + FromPrimitive> NDArray<T> {
-    pub fn ones(size: Vec<usize>) -> Self {
+    pub fn ones(size: &Vec<usize>) -> Self {
         Self::create_constant_values_vec(size, T::from_u32(1).unwrap())
     }
 
-    pub fn zeros(size: Vec<usize>) -> Self {
+    pub fn zeros(size: &Vec<usize>) -> Self {
         Self::create_constant_values_vec(size, T::from_u32(0).unwrap())
     }
 
-    pub fn full(size: Vec<usize>, fill_value: T) -> Self {
+    pub fn full(size: &Vec<usize>, fill_value: T) -> Self {
         Self::create_constant_values_vec(size, fill_value)
     }
 
-    pub fn random(size: Vec<usize>) -> Self {
+    pub fn random(size: &Vec<usize>) -> Self {
         Self::create_random_values_vec(size)
+    }
+
+    #[cfg(test)]
+    pub fn debug_create_raw(_data: Vec<T>, _shape: Vec<usize>, _strides: Vec<usize>) -> Self {
+        return NDArray{_data, _strides, _shape};
     }
 
     pub fn shape(&self) -> Vec<usize> {
@@ -45,33 +50,32 @@ impl<T: Num + Copy + FromPrimitive> NDArray<T> {
         strides
     }
 
-    fn create_random_values_vec(size: Vec<usize>) -> Self {
+    fn create_random_values_vec(size: &Vec<usize>) -> Self {
         let mut rng = rand::thread_rng();
         let vec_size = Self::compute_array_size(&size);
         let strides = Self::calculate_strides(&size);
         let mut data = Vec::with_capacity(vec_size);
 
         for _ in 0..vec_size {
-            // Assuming `T` can be created from a random f64 or another suitable type
-            let random_value = T::from_f64(rng.gen::<f64>()).unwrap(); // Adjust this based on the kind of T
+            let random_value = T::from_f64(rng.gen::<f64>()).unwrap();
             data.push(random_value);
         }
 
-        NDArray {
+        return NDArray {
             _data: data,
-            _shape: size,
+            _shape: size.clone(),
             _strides: strides,
         }
     }
 
-    fn create_constant_values_vec(size: Vec<usize>, initial_value: T) -> Self {
+    fn create_constant_values_vec(size: &Vec<usize>, initial_value: T) -> Self {
         let vec_size = Self::compute_array_size(&size);
         let strides = Self::calculate_strides(&size);
         let data = vec![initial_value; vec_size];
 
-        NDArray {
+         return NDArray {
             _data: data,
-            _shape: size,
+            _shape: size.clone(),
             _strides: strides,
         }
     }

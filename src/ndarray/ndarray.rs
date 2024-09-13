@@ -26,7 +26,7 @@ where
 
     #[cfg(test)]
     pub fn debug_create_raw(_data: Vec<T>, _shape: Vec<usize>, _strides: Vec<usize>) -> Self {
-        return NDArray{_data, _strides, _shape};
+        NDArray{_data, _strides, _shape}
     }
 
     pub fn shape(&self) -> Vec<usize> {

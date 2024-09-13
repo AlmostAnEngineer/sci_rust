@@ -1,8 +1,13 @@
 use num::{Num, FromPrimitive};
-use rand::Rng;
 use crate::ndarray::NDArray;
+use num_traits::{Bounded};
+use rand::distributions::{Distribution, Uniform};
+use rand::distributions::uniform::SampleUniform;
 
-impl<T: Num + Copy + FromPrimitive> NDArray<T> {
+impl<T: Num + Copy + FromPrimitive> NDArray<T>
+where
+    T: Num + Copy + FromPrimitive + Bounded + PartialOrd + SampleUniform,
+    Uniform<T>: Distribution<T>,{
     pub fn ones(size: &Vec<usize>) -> Self {
         Self::create_constant_values_vec(size, T::from_u32(1).unwrap())
     }
@@ -50,18 +55,23 @@ impl<T: Num + Copy + FromPrimitive> NDArray<T> {
         strides
     }
 
-    fn create_random_values_vec(size: &Vec<usize>) -> Self {
+    fn create_random_values_vec(size: &Vec<usize>) -> Self
+    {
         let mut rng = rand::thread_rng();
         let vec_size = Self::compute_array_size(&size);
         let strides = Self::calculate_strides(&size);
         let mut data = Vec::with_capacity(vec_size);
 
+        let min = T::min_value();
+        let max = T::max_value();
+        let between = Uniform::from(min..max);
+
         for _ in 0..vec_size {
-            let random_value = T::from_f64(rng.gen::<f64>()).unwrap();
-            data.push(random_value);
+            let random_value: T = between.sample(&mut rng);
+            data.push(random_value)
         }
 
-        return NDArray {
+        NDArray {
             _data: data,
             _shape: size.clone(),
             _strides: strides,
@@ -73,7 +83,7 @@ impl<T: Num + Copy + FromPrimitive> NDArray<T> {
         let strides = Self::calculate_strides(&size);
         let data = vec![initial_value; vec_size];
 
-         return NDArray {
+         NDArray {
             _data: data,
             _shape: size.clone(),
             _strides: strides,

@@ -172,6 +172,7 @@ name = "sci_rust"
 version = "0.0.1"
 dependencies = [
  "num",
+ "num-traits",
  "rand",
 ]
 

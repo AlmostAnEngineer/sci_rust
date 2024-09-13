@@ -9,3 +9,4 @@ repository = "https://github.com/AlmostAnEngineer/sci_rust.git"
 [dependencies]
 num = "0.4.3"
 rand = "0.8.0"
+num-traits = "0.2.19"

@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct NDArray<T>{
     _data: Vec<T>,
     _shape: Vec<usize>,

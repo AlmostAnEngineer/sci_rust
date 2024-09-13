@@ -9,19 +9,19 @@ where
     T: Num + Copy + FromPrimitive + Bounded + PartialOrd + SampleUniform,
     Uniform<T>: Distribution<T>,{
     pub fn ones(size: &Vec<usize>) -> Self {
-        Self::create_constant_values_vec(size, T::from_u32(1).unwrap())
+        Self::create_constant_values_vec(size.clone(), T::from_u32(1).unwrap())
     }
 
     pub fn zeros(size: &Vec<usize>) -> Self {
-        Self::create_constant_values_vec(size, T::from_u32(0).unwrap())
+        Self::create_constant_values_vec(size.clone(), T::from_u32(0).unwrap())
     }
 
     pub fn full(size: &Vec<usize>, fill_value: T) -> Self {
-        Self::create_constant_values_vec(size, fill_value)
+        Self::create_constant_values_vec(size.clone(), fill_value)
     }
 
     pub fn random(size: &Vec<usize>) -> Self {
-        Self::create_random_values_vec(size)
+        Self::create_random_values_vec(size.clone())
     }
 
     #[cfg(test)]
@@ -55,7 +55,7 @@ where
         strides
     }
 
-    fn create_random_values_vec(size: &Vec<usize>) -> Self
+    fn create_random_values_vec(size: Vec<usize>) -> Self
     {
         let mut rng = rand::thread_rng();
         let vec_size = Self::compute_array_size(&size);
@@ -78,7 +78,7 @@ where
         }
     }
 
-    fn create_constant_values_vec(size: &Vec<usize>, initial_value: T) -> Self {
+    fn create_constant_values_vec(size: Vec<usize>, initial_value: T) -> Self {
         let vec_size = Self::compute_array_size(&size);
         let strides = Self::calculate_strides(&size);
         let data = vec![initial_value; vec_size];

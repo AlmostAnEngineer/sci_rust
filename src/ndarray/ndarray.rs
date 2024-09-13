@@ -6,7 +6,7 @@ use rand::distributions::uniform::SampleUniform;
 
 impl<T: Num + Copy + FromPrimitive> NDArray<T>
 where
-    T: Num + Copy + FromPrimitive + Bounded + PartialOrd + SampleUniform,
+    T: Num + Copy + FromPrimitive + Bounded + PartialOrd + SampleUniform + Clone,
     Uniform<T>: Distribution<T>,{
     pub fn ones(size: &Vec<usize>) -> Self {
         Self::create_constant_values_vec(size.clone(), T::from_u32(1).unwrap())

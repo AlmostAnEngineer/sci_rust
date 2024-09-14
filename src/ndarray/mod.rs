@@ -5,9 +5,11 @@ pub struct NDArray<T>{
     _strides: Vec<usize>
 }
 
-mod ndarray;
-mod ndarray_operators;
+pub mod ndarray;
+pub mod ndarray_operators;
+pub mod ndarray_traits;
+pub mod ndarray_utils;
+
 
 #[cfg(test)]
 mod tests;
-mod utils;

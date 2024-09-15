@@ -22,11 +22,6 @@ where
         Self::create_random_values_vec(size.clone())
     }
 
-    #[cfg(test)]
-    pub fn debug_create_raw(_data: Vec<T>, _shape: Vec<usize>, _strides: Vec<usize>) -> Self {
-        NDArray{_data, _strides, _shape}
-    }
-
     pub fn shape(&self) -> Vec<usize> {
         self._shape.clone()
     }
@@ -86,5 +81,10 @@ where
             _shape: size.clone(),
             _strides: strides,
         }
+    }
+
+    #[cfg(test)]
+    pub fn debug_create_raw(_data: Vec<T>, _shape: Vec<usize>, _strides: Vec<usize>) -> Self {
+        NDArray{_data, _strides, _shape}
     }
 }

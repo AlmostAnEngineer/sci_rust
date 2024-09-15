@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub, Mul, Div, Rem};
+use std::ops::{Add, Sub, Mul, Div, Rem, AddAssign};
 use std::cmp::PartialEq;
 use crate::ndarray::ndarray_traits::NDArrayBounds;
 use crate::ndarray::NDArray;
@@ -10,9 +10,7 @@ impl<T: NDArrayBounds> Add for NDArray<T>
         if !NDArray::shape_equal(&self, &rhs) {
             return None;
         }
-        let buffored_output: Vec<T> = self._data.iter().zip(rhs._data.iter())
-            .map(|(a, b)| *a + *b)
-            .collect();
+        let buffored_output = add_two_vectors(&self._data, &rhs._data);
         let new_array = NDArray{_data: buffored_output, _shape: self._shape.clone(), _strides: self._strides.clone()};
         Some(new_array)
     }
@@ -25,9 +23,7 @@ impl<T: NDArrayBounds> Sub for NDArray<T>
         if !NDArray::shape_equal(&self, &rhs) {
             return None;
         }
-        let buffored_output: Vec<T> = self._data.iter().zip(rhs._data.iter())
-            .map(|(a, b)| *a - *b)
-            .collect();
+        let buffored_output = substract_two_vectors(&self._data, &rhs._data);
         let new_array = NDArray{_data: buffored_output, _shape: self._shape.clone(), _strides: self._strides.clone()};
         Some(new_array)
     }
@@ -99,4 +95,29 @@ impl<T: NDArrayBounds> PartialEq for NDArray<T> {
         let result_data = self._data.iter().eq(other._data.iter());
         result_data
     }
+}
+
+impl<T: NDArrayBounds> AddAssign for NDArray<T> {
+    fn add_assign(&mut self, rhs: Self) {
+        if !NDArray::shape_equal(&self, &rhs) {
+            panic!("cannot add assign");
+        }
+        let buffored_output = add_two_vectors(&self._data, &rhs._data);
+        let new_array = NDArray{_data: buffored_output, _shape: self._shape.clone(), _strides: self._strides.clone()};
+        *self = new_array;
+    }
+}
+
+fn add_two_vectors<T: NDArrayBounds>(a: &Vec<T>, b: &Vec<T>) -> Vec<T> {
+    let result = a.iter().zip(b.iter())
+        .map(|(a, b)| *a + *b)
+        .collect();
+    result
+}
+
+fn substract_two_vectors<T: NDArrayBounds>(a: &Vec<T>, b: &Vec<T>) -> Vec<T> {
+    let result = a.iter().zip(b.iter())
+        .map(|(a, b)| *a - *b)
+        .collect();
+    result
 }

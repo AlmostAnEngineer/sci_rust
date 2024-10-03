@@ -6,9 +6,10 @@ pub struct NDArray<T>{
 }
 
 pub mod ndarray;
-pub mod ndarray_operators;
-pub mod ndarray_traits;
-pub mod ndarray_utils;
+pub mod operators;
+pub mod traits;
+pub mod utils;
+pub mod display;
 
 
 #[cfg(test)]

@@ -1,6 +1,6 @@
 use crate::ndarray::NDArray;
 use rand::distributions::{Distribution, Uniform};
-use crate::ndarray::ndarray_traits::NDArrayBounds;
+use crate::ndarray::traits::NDArrayBounds;
 
 impl<T> NDArray<T>
 where

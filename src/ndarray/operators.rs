@@ -1,6 +1,6 @@
 use std::ops::{Add, Sub, Mul, Div, Rem, AddAssign};
 use std::cmp::PartialEq;
-use crate::ndarray::ndarray_traits::NDArrayBounds;
+use crate::ndarray::traits::NDArrayBounds;
 use crate::ndarray::NDArray;
 
 impl<T: NDArrayBounds> Add for NDArray<T>

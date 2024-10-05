@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub, Mul, Div, Rem, AddAssign};
+use std::ops::{Add, Sub, Mul, Div, Rem, AddAssign, SubAssign, MulAssign, DivAssign, RemAssign};
 use std::cmp::PartialEq;
 use crate::ndarray::traits::NDArrayBounds;
 use crate::ndarray::NDArray;
@@ -37,9 +37,7 @@ impl<T: NDArrayBounds> Mul for NDArray<T> {
             return None;
         }
 
-        let result_data = self._data.iter().zip(rhs._data.iter())
-            .map(|(a, b)| *a * *b)
-            .collect();
+        let result_data = mul_two_vectors(&self._data, &rhs._data);
 
         Some(NDArray {
             _shape: self._shape.clone(),
@@ -108,6 +106,50 @@ impl<T: NDArrayBounds> AddAssign for NDArray<T> {
     }
 }
 
+impl<T: NDArrayBounds> SubAssign for NDArray<T> {
+    fn sub_assign(&mut self, rhs: Self) {
+        if !NDArray::shape_equal(&self, &rhs) {
+            panic!("cannot add assign");
+        }
+        let buffored_output = substract_two_vectors(&self._data, &rhs._data);
+        let new_array = NDArray{_data: buffored_output, _shape: self._shape.clone(), _strides: self._strides.clone()};
+        *self = new_array;
+    }
+}
+
+impl<T: NDArrayBounds> MulAssign for NDArray<T> {
+    fn mul_assign(&mut self, rhs: Self) {
+        if !NDArray::shape_equal(&self, &rhs) {
+            panic!("cannot add assign");
+        }
+        let buffored_output = mul_two_vectors(&self._data, &rhs._data);
+        let new_array = NDArray{_data: buffored_output, _shape: self._shape.clone(), _strides: self._strides.clone()};
+        *self = new_array;
+    }
+}
+
+impl<T: NDArrayBounds> DivAssign for NDArray<T> {
+    fn div_assign(&mut self, rhs: Self) {
+        if !NDArray::shape_equal(&self, &rhs) {
+            panic!("cannot add assign");
+        }
+        let buffored_output = div_two_vectors(&self._data, &rhs._data);
+        let new_array = NDArray{_data: buffored_output, _shape: self._shape.clone(), _strides: self._strides.clone()};
+        *self = new_array;
+    }
+}
+
+impl<T: NDArrayBounds> RemAssign for NDArray<T> {
+    fn rem_assign(&mut self, rhs: Self) {
+        if !NDArray::shape_equal(&self, &rhs) {
+            panic!("cannot add assign");
+        }
+        let buffored_output = rem_two_vectors(&self._data, &rhs._data);
+        let new_array = NDArray{_data: buffored_output, _shape: self._shape.clone(), _strides: self._strides.clone()};
+        *self = new_array;
+    }
+}
+
 fn add_two_vectors<T: NDArrayBounds>(a: &Vec<T>, b: &Vec<T>) -> Vec<T> {
     let result = a.iter().zip(b.iter())
         .map(|(a, b)| *a + *b)
@@ -118,6 +160,27 @@ fn add_two_vectors<T: NDArrayBounds>(a: &Vec<T>, b: &Vec<T>) -> Vec<T> {
 fn substract_two_vectors<T: NDArrayBounds>(a: &Vec<T>, b: &Vec<T>) -> Vec<T> {
     let result = a.iter().zip(b.iter())
         .map(|(a, b)| *a - *b)
+        .collect();
+    result
+}
+
+fn mul_two_vectors<T: NDArrayBounds>(a: &Vec<T>, b: &Vec<T>) -> Vec<T> {
+    let result = a.iter().zip(b.iter())
+        .map(|(a, b)| *a * *b)
+        .collect();
+    result
+}
+
+fn div_two_vectors<T: NDArrayBounds>(a: &Vec<T>, b: &Vec<T>) -> Vec<T> {
+    let result = a.iter().zip(b.iter())
+        .map(|(a, b)| *a / *b)
+        .collect();
+    result
+}
+
+fn rem_two_vectors<T: NDArrayBounds>(a: &Vec<T>, b: &Vec<T>) -> Vec<T> {
+    let result = a.iter().zip(b.iter())
+        .map(|(a, b)| *a % *b)
         .collect();
     result
 }

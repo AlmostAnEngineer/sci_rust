@@ -83,6 +83,10 @@ where
         }
     }
 
+    fn index(&self, indices: &[usize]) -> usize {
+        indices.iter().zip(&self._strides).map(|(i, stride)| i * stride).sum()
+    }
+
     #[cfg(test)]
     pub fn debug_create_raw(_data: Vec<T>, _shape: Vec<usize>, _strides: Vec<usize>) -> Self {
         NDArray{_data, _strides, _shape}

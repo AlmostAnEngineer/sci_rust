@@ -10,6 +10,7 @@ pub mod operators;
 pub mod traits;
 pub mod utils;
 pub mod display;
+pub mod iterator;
 
 
 #[cfg(test)]

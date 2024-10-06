@@ -32,6 +32,14 @@ where
         self._shape.clear();
     }
 
+    pub fn get(&self, cords: &[usize]) -> Result<T, String> {
+        if cords.len() != self.shape().len() {
+            return Err("Cords len mismatch ndim!".to_string());
+        }
+        let idx = self.index(cords);
+        return Ok(self._data[idx].clone());
+    }
+
     pub fn ndim(&self) -> usize {
         self._shape.len()
     }
@@ -83,7 +91,7 @@ where
         }
     }
 
-    fn index(&self, indices: &[usize]) -> usize {
+    pub fn index(&self, indices: &[usize]) -> usize {
         indices.iter().zip(&self._strides).map(|(i, stride)| i * stride).sum()
     }
 

@@ -7,7 +7,7 @@ mod tests_add_ndarrays {
         let a: NDArray<usize> = NDArray::ones(&vec_size);
         let b: NDArray<usize> = NDArray::zeros(&vec_size);
 
-        let add_result = a.clone() + b.clone();
+        let add_result = &a + &b;
         let add = add_result.expect("ndim mismatch");
         assert_eq!(add._data, a._data, "should be same");
     }
@@ -18,7 +18,7 @@ mod tests_add_ndarrays {
         let a: NDArray<usize> = NDArray::ones(&vec_size);
         let b: NDArray<usize> = NDArray::zeros(&vec_size);
 
-        let add_result = a.clone() + b.clone();
+        let add_result = &a + &b;
         let add = add_result.expect("ndim mismatch");
         assert_ne!(add._data, b._data, "should not be same");
     }
